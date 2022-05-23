@@ -10,9 +10,10 @@ router.get('/', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const course = new Course(req.body.title, req.body.price, req.body.img)
-    course.save()
+
+    await course.save()
 
     res.redirect('/courses')
 })
