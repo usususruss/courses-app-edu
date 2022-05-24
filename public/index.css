@@ -29,3 +29,13 @@
 .course .price.big {
     font-size: 2.5rem;
 }
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.actions form {
+    margin-bottom: 0;
+}
