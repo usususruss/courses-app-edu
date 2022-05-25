@@ -73,3 +73,5 @@ const bindCartListeners = () => {
 formatPrices()
 formatDates()
 bindCartListeners()
+
+M.Tabs.init(document.querySelectorAll('.tabs'))

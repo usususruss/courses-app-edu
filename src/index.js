@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars')
 const path = require('path')
 const mongoose = require('mongoose')
 
+const authRoutes = require('./routes/auth')
 const homeRoutes = require('./routes/home')
 const addRoutes = require('./routes/add')
 const coursesRoutes = require('./routes/courses')
@@ -37,6 +38,7 @@ app.use(async (req, _res, next) => {
 })
 
 app.use('/', homeRoutes)
+app.use('/auth', authRoutes)
 app.use('/add', addRoutes)
 app.use('/courses', coursesRoutes)
 app.use('/cart', cardRoutes)
