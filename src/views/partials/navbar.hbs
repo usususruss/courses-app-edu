@@ -22,9 +22,15 @@
             {{/if}}
 
             {{#if isCard}}
-                <li class='active'><a href='/card'>Cart</a></li>
+                <li class='active'><a href='/cart'>Cart</a></li>
             {{else}}
-                <li><a href='/card'>Cart</a></li>
+                <li><a href='/cart'>Cart</a></li>
+            {{/if}}
+
+            {{#if isOrders}}
+                <li class='active'><a href='/orders'>Orders</a></li>
+            {{else}}
+                <li><a href='/orders'>Orders</a></li>
             {{/if}}
         </ul>
     </div>

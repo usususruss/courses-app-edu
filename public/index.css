@@ -10,6 +10,10 @@
     border-bottom: 1px solid rgb(255, 171, 64, 0.5);
 }
 
+.card-image img {
+    max-height: 200px;
+}
+
 .course {
     width: 100%;
     display: flex;
@@ -38,4 +42,8 @@
 
 .actions form {
     margin-bottom: 0;
+}
+
+.course-form {
+    margin-bottom: 2rem;
 }

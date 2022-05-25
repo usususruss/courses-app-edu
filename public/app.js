@@ -5,22 +5,38 @@ const toCurency = price => {
     }).format(price || 0)
 }
 
+const toDate = dateStr => {
+    return new Intl.DateTimeFormat('en-US', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }).format(new Date(dateStr))
+}
+
 const formatPrices = () => {
     document.querySelectorAll('.price').forEach(node => {
         node.textContent = toCurency(parseFloat(node.textContent || 0))
     })
 }
 
-const bindCartListeners = () => {
-    const $card = document.getElementById('card')
+const formatDates = () => {
+    document.querySelectorAll('.date').forEach(node => {
+        node.textContent = toDate(node.textContent)
+    })
+}
 
-    if ($card) {
-        $card.addEventListener('click', event => {
+const bindCartListeners = () => {
+    const $cart = document.getElementById('cart')
+
+    if ($cart) {
+        $cart.addEventListener('click', event => {
             if (event.target.classList.contains('js-remove')) {
                 const id = event.target.dataset.id
-                console.log(id)
 
-                fetch(`/card/remove/${id}`, { method: 'delete' })
+                fetch(`/cart/remove/${id}`, { method: 'delete' })
                     .then(res => res.json())
                     .then(card => {
                         if (card.courses.length) {
@@ -42,10 +58,10 @@ const bindCartListeners = () => {
                         `
                                 )
                                 .join('')
-                            $card.querySelector('tbody').innerHTML = html
-                            $card.querySelector('span.price').textContent = toCurency(card.price)
+                            $cart.querySelector('tbody').innerHTML = html
+                            $cart.querySelector('span.price').textContent = toCurency(card.price)
                         } else {
-                            $card.innerHTML = '<p>Cart is empty</p>'
+                            $cart.innerHTML = '<p>Cart is empty</p>'
                         }
                     })
                     .catch(() => {})
@@ -55,4 +71,5 @@ const bindCartListeners = () => {
 }
 
 formatPrices()
+formatDates()
 bindCartListeners()
