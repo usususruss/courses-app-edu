@@ -1,4 +1,5 @@
 const { Router } = require('express')
+const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 
 const router = Router()
@@ -17,18 +18,59 @@ router.get('/logout', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    const id = '628de96ff878c39a575419a3' // Hardcode!
-    const user = await User.findById(id)
+    try {
+        const { email, password } = req.body
 
-    req.session.user = user
-    req.session.isAuthenticated = true
-    req.session.save(err => {
-        if (err) throw err
+        const candidate = await User.findOne({ email })
+        if (candidate) {
+            const areSame = await bcrypt.compare(password, candidate.password)
 
-        res.redirect('/')
-    })
+            if (areSame) {
+                req.session.user = candidate
+                req.session.isAuthenticated = true
+                req.session.save(err => {
+                    if (err) throw err
+
+                    res.redirect('/')
+                })
+            } else {
+                // TODO Message "Bad credentials"
+                res.redirect('/auth/login#login')
+            }
+        } else {
+            // TODO Message "User does not exist"
+            res.redirect('/auth/login#login')
+        }
+    } catch (e) {
+        console.error(e)
+    }
 })
 
-router.post('/register', async (req, res) => {})
+router.post('/register', async (req, res) => {
+    try {
+        const { email, password, confirm, name } = req.body
+
+        // TODO Handle passwords mismatch error
+
+        const candidate = await User.findOne({ email })
+
+        if (candidate) {
+            res.redirect('/auth/login#register')
+        } else {
+            const hashPassword = await bcrypt.hash(password, 10)
+            const user = new User({
+                email,
+                name,
+                password: hashPassword,
+                cart: { items: [] }
+            })
+
+            await user.save()
+            res.redirect('/auth/login#login')
+        }
+    } catch (e) {
+        console.error(e)
+    }
+})
 
 module.exports = router
