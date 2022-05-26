@@ -1,4 +1,8 @@
-# Express Course App
+# Course App
+
+Educational project. Development practice on the Express, Mongo, GraphQL stack. No focus on design and stylization.
+
+<br>
 
 ## Local dev start up
 
@@ -12,6 +16,19 @@
 
 ```console
 > npm run dev
+```
+
+<br>
+
+## Debugging in **VS Code**
+
+-   Open search panel: `Ctrl` + `Shift` + `P`
+-   Type _"Toggle Auto Attach"_
+-   Hit _"Only With Flag"_ option
+-   Open new terminal and enter:
+
+```console
+> npm run debug
 ```
 
 <br>
