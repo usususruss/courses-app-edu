@@ -45,7 +45,7 @@ router.delete('/remove/:id', auth, async (req, res) => {
         courses
     }
 
-    res.status(200).json(cartView)
+    res.status(200).setHeader('csrf', res.locals.csrf).json(cartView)
 })
 
 module.exports = router

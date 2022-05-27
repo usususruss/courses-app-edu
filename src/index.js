@@ -1,6 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const path = require('path')
+const scrf = require('csurf')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoStore = require('connect-mongodb-session')(session)
@@ -46,6 +47,7 @@ app.use(
         store
     })
 )
+app.use(scrf())
 
 app.use(varMiddleware)
 app.use(userMiddleware)

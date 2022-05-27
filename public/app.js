@@ -35,13 +35,23 @@ const bindCartListeners = () => {
         $cart.addEventListener('click', event => {
             if (event.target.classList.contains('js-remove')) {
                 const id = event.target.dataset.id
+                const csrf = event.target.dataset.csrf
 
-                fetch(`/cart/remove/${id}`, { method: 'delete' })
-                    .then(res => res.json())
-                    .then(card => {
+                const options = {
+                    method: 'delete',
+                    headers: {
+                        'X-XSRF-TOKEN': csrf
+                    }
+                }
+
+                fetch(`/cart/remove/${id}`, options)
+                    .then(async res => {
+                        const card = await res.json()
+                        const csrf = res.headers.get('csrf')
+                        return { csrf, card }
+                    })
+                    .then(({ card, csrf }) => {
                         if (card.courses.length) {
-                            console.log('card.courses', card.courses)
-
                             const html = card.courses
                                 .map(
                                     c => `
@@ -52,6 +62,7 @@ const bindCartListeners = () => {
                                 <button
                                     class='btn btn-small js-remove'
                                     data-id='${c.id}'
+                                    data-csrf='${csrf}'
                                 >Remove</button>
                             </td>
                         </tr>
@@ -64,7 +75,9 @@ const bindCartListeners = () => {
                             $cart.innerHTML = '<p>Cart is empty</p>'
                         }
                     })
-                    .catch(() => {})
+                    .catch(e => {
+                        console.log(e)
+                    })
             }
         })
     }
