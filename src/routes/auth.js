@@ -7,7 +7,9 @@ const router = Router()
 router.get('/login', async (req, res) => {
     res.render('auth/login', {
         title: 'Authorization',
-        isLogin: true
+        isLogin: true,
+        errorLogin: req.flash('errorLogin'),
+        errorRegister: req.flash('errorRegister')
     })
 })
 
@@ -34,11 +36,11 @@ router.post('/login', async (req, res) => {
                     res.redirect('/')
                 })
             } else {
-                // TODO Message "Bad credentials"
+                req.flash('errorLogin', 'Bad credentials')
                 res.redirect('/auth/login#login')
             }
         } else {
-            // TODO Message "User does not exist"
+            req.flash('errorLogin', 'User does not exist')
             res.redirect('/auth/login#login')
         }
     } catch (e) {
@@ -49,14 +51,17 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         const { email, password, confirm, name } = req.body
-
-        // TODO Handle passwords mismatch error
-
         const candidate = await User.findOne({ email })
 
         if (candidate) {
+            req.flash('errorRegister', 'User with such email already exists!')
             res.redirect('/auth/login#register')
         } else {
+            if (password !== confirm) {
+                req.flash('errorRegister', 'Passwords are mismatching!')
+                return res.redirect('/auth/login#register')
+            }
+
             const hashPassword = await bcrypt.hash(password, 10)
             const user = new User({
                 email,

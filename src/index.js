@@ -4,6 +4,7 @@ const path = require('path')
 const scrf = require('csurf')
 const mongoose = require('mongoose')
 const session = require('express-session')
+const flash = require('connect-flash')
 const MongoStore = require('connect-mongodb-session')(session)
 
 const varMiddleware = require('./middleware/variables')
@@ -48,7 +49,7 @@ app.use(
     })
 )
 app.use(scrf())
-
+app.use(flash())
 app.use(varMiddleware)
 app.use(userMiddleware)
 

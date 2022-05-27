@@ -10,6 +10,10 @@
 
             <h3>Login to shop</h3>
 
+            {{#if errorLogin}}
+                <p class='alert'>{{errorLogin}}</p>
+            {{/if}}
+
             <form action='/auth/login' method='POST'>
                 <div class='input-field'>
                     <input id='email' name='email' type='email' class='validate' required autofocus />
@@ -22,7 +26,7 @@
                     <span class='helper-text' data-error='Enter password'></span>
                 </div>
 
-                <input type="hidden" name="_csrf" value="{{csrf}}">
+                <input type='hidden' name='_csrf' value='{{csrf}}' />
 
                 <button type='submit' class='btn btn-primary'>Login</button>
             </form>
@@ -31,6 +35,10 @@
         <div id='register' class='col s6 offset-s3'>
 
             <h3>Create account</h3>
+
+            {{#if errorRegister}}
+                <p class='alert'>{{errorRegister}}</p>
+            {{/if}}
 
             <form action='/auth/register' method='POST'>
                 <div class='input-field'>
@@ -56,7 +64,7 @@
                     <label for='name'>Name</label>
                 </div>
 
-                <input type="hidden" name="_csrf" value="{{csrf}}">
+                <input type='hidden' name='_csrf' value='{{csrf}}' />
 
                 <button type='submit' class='btn btn-primary'>Register</button>
             </form>
